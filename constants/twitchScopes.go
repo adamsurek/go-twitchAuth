@@ -1,4 +1,4 @@
-﻿package go_twitchAuth
+﻿package constants
 
 import (
 	"bytes"
@@ -8,7 +8,8 @@ import (
 type ScopeType int
 
 const (
-	UserManageBlockedUsers ScopeType = iota + 1
+	ChannelReadSubscriptions ScopeType = iota + 1
+	UserManageBlockedUsers
 	UserReadChat
 	UserReadEmotes
 	UserReadFollows
@@ -20,6 +21,7 @@ const (
 )
 
 var ScopeTypeId = map[string]ScopeType{
+	"channel:read:subscriptions":   ChannelReadSubscriptions,
 	"user:manage:blocked_users":    UserManageBlockedUsers,
 	"user:read:chat":               UserReadChat,
 	"user:read:emotes":             UserReadEmotes,
@@ -32,6 +34,7 @@ var ScopeTypeId = map[string]ScopeType{
 }
 
 var ScopeTypeName = map[ScopeType]string{
+	ChannelReadSubscriptions:  "channel:read:subscriptions",
 	UserManageBlockedUsers:    "user:manage:blocked_users",
 	UserReadChat:              "user:read:chat",
 	UserReadEmotes:            "user:read:emotes",
@@ -52,7 +55,7 @@ func (t *ScopeType) MarshalJSON() ([]byte, error) {
 
 func (t *ScopeType) UnmarshalJSON(b []byte) error {
 	var s string
-	err := json.Unmarshal(b, &t)
+	err := json.Unmarshal(b, &s)
 	if err != nil {
 		return err
 	}
