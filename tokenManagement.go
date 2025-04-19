@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	. "go-twitchAuth/constants"
+	. "github.com/adamsurek/go-twitchAuth/constants"
 	"io"
 	"net/http"
 	"time"
