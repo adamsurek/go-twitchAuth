@@ -1,4 +1,4 @@
-﻿package constants
+﻿package go_twitchAuth
 
 const (
 	AuthorizationUrl = "https://id.twitch.tv/oauth2/authorize"

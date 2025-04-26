@@ -1,7 +1,6 @@
 ﻿package go_twitchAuth
 
 import (
-	. "github.com/adamsurek/go-twitchAuth/constants"
 	"net/url"
 	"strconv"
 	"strings"

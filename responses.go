@@ -1,4 +1,4 @@
-﻿package constants
+﻿package go_twitchAuth
 
 type AccessTokenRequestResponse struct {
 	AccessToken  string      `json:"access_token"`

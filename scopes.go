@@ -1,4 +1,4 @@
-﻿package constants
+﻿package go_twitchAuth
 
 import (
 	"bytes"
