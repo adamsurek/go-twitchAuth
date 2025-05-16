@@ -23,8 +23,8 @@ func NewClientCredentialsGrantAuthenticator(clientId string, clientSecret string
 	}
 }
 
-func (a *ClientCredentialsGrantAuthenticator) GetToken() (*tokenResponse, error) {
-	var t tokenResponse
+func (a *ClientCredentialsGrantAuthenticator) GetToken() (*TokenResponse, error) {
+	var t TokenResponse
 
 	req, err := http.NewRequest("POST", TokenUrl, nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func (a *ClientCredentialsGrantAuthenticator) GetToken() (*tokenResponse, error)
 	}
 
 	if res.StatusCode != 200 {
-		t.Status = FailureStatus
+		t.TokenRequestStatus = FailureStatus
 		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
@@ -60,7 +60,7 @@ func (a *ClientCredentialsGrantAuthenticator) GetToken() (*tokenResponse, error)
 		return &t, nil
 	}
 
-	t.Status = SuccessStatus
+	t.TokenRequestStatus = SuccessStatus
 	err = json.Unmarshal(b, &t.TokenData)
 	if err != nil {
 		e := fmt.Sprintf("error while parsing token response: %s", err)

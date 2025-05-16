@@ -68,8 +68,8 @@ func (a *AuthorizationCodeGrantAuthenticator) getScopeNames() []string {
 	return scopeNames
 }
 
-func (a *AuthorizationCodeGrantAuthenticator) GetToken(code string) (*tokenResponse, error) {
-	var t tokenResponse
+func (a *AuthorizationCodeGrantAuthenticator) GetToken(code string) (*TokenResponse, error) {
+	var t TokenResponse
 
 	req, err := http.NewRequest("POST", TokenUrl, nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func (a *AuthorizationCodeGrantAuthenticator) GetToken(code string) (*tokenRespo
 	}
 
 	if res.StatusCode != 200 {
-		t.Status = FailureStatus
+		t.TokenRequestStatus = FailureStatus
 		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
@@ -107,7 +107,7 @@ func (a *AuthorizationCodeGrantAuthenticator) GetToken(code string) (*tokenRespo
 		return &t, nil
 	}
 
-	t.Status = SuccessStatus
+	t.TokenRequestStatus = SuccessStatus
 	err = json.Unmarshal(b, &t.TokenData)
 	if err != nil {
 		e := fmt.Sprintf("error while parsing token response: %s", err)

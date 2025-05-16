@@ -3,37 +3,37 @@
 type responseStatus int
 
 const (
-	SuccessStatus responseStatus = iota
-	FailureStatus
+	FailureStatus responseStatus = iota
+	SuccessStatus
 )
 
 var statusName = map[responseStatus]string{
-	SuccessStatus: "success",
 	FailureStatus: "failure",
+	SuccessStatus: "success",
 }
 
 func (rs responseStatus) String() string {
 	return statusName[rs]
 }
 
-type tokenResponse struct {
-	Status      responseStatus
-	TokenData   accessTokenRequestResponse
-	FailureData failedRequestResponse
+type TokenResponse struct {
+	TokenRequestStatus responseStatus
+	TokenData          *AccessTokenRequestResponse
+	FailureData        *FailedRequestResponse
 }
 
-type tokenValidationResponse struct {
-	Status         responseStatus
-	ValidationData validTokenResponse
-	FailureData    failedRequestResponse
+type TokenValidationResponse struct {
+	ValidationStatus responseStatus
+	ValidationData   *ValidTokenResponse
+	FailureData      *FailedRequestResponse
 }
 
-type tokenRevocationResponse struct {
-	Status      responseStatus
-	FailureData failedRequestResponse
+type TokenRevocationResponse struct {
+	ValidationStatus responseStatus
+	FailureData      *FailedRequestResponse
 }
 
-type accessTokenRequestResponse struct {
+type AccessTokenRequestResponse struct {
 	AccessToken  string      `json:"access_token"`
 	RefreshToken string      `json:"refresh_token"`
 	ExpiresIn    int         `json:"expires_in"`
@@ -41,7 +41,7 @@ type accessTokenRequestResponse struct {
 	Scopes       []ScopeType `json:"scopes"`
 }
 
-type validTokenResponse struct {
+type ValidTokenResponse struct {
 	ClientId  string      `json:"client_id"`
 	Login     string      `json:"login"`
 	Scopes    []ScopeType `json:"scopes"`
@@ -49,7 +49,7 @@ type validTokenResponse struct {
 	ExpiresIn int         `json:"expires_in"`
 }
 
-type failedRequestResponse struct {
+type FailedRequestResponse struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 }
