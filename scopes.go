@@ -8,237 +8,237 @@ import (
 type ScopeType int
 
 const (
-	AnalyticsReadExtensions ScopeType = iota + 1
-	AnalyticsReadGames
-	BitsRead
-	ChannelBot
-	ChannelManageAds
-	ChannelReadAds
-	ChannelManageBroadcast
-	ChannelReadCharity
-	ChannelEditCommercial
-	ChannelReadEditors
-	ChannelManageExtensions
-	ChannelReadGoals
-	ChannelReadGuestStar
-	ChannelManageGuestStar
-	ChannelReadHypeTrain
-	ChannelManageModerators
-	ChannelReadPolls
-	ChannelManagePolls
-	ChannelReadPredictions
-	ChannelManagePredictions
-	ChannelManageRaids
-	ChannelReadRedemptions
-	ChannelManageRedemptions
-	ChannelManageSchedule
-	ChannelReadStreamKey
-	ChannelReadSubscriptions
-	ChannelManageVideos
-	ChannelReadVips
-	ChannelManageVips
-	ChannelModerate
-	ClipsEdit
-	ModerationRead
-	ModeratorManageAnnouncements
-	ModeratorManageAutomod
-	ModeratorReadAutomodSettings
-	ModeratorManageAutomodSettings
-	ModeratorReadBannedUsers
-	ModeratorManageBannedUsers
-	ModeratorReadBlockedTerms
-	ModeratorReadChatMessages
-	ModeratorManageBlockedTerms
-	ModeratorManageChatMessages
-	ModeratorReadChatSettings
-	ModeratorManageChatSettings
-	ModeratorReadChatters
-	ModeratorReadFollowers
-	ModeratorReadGuestStar
-	ModeratorManageGuestStar
-	ModeratorReadModerators
-	ModeratorReadShieldMode
-	ModeratorManageShieldMode
-	ModeratorReadShoutouts
-	ModeratorManageShoutouts
-	ModeratorReadSuspiciousUsers
-	ModeratorReadUnbanRequests
-	ModeratorManageUnbanRequests
-	ModeratorReadVips
-	ModeratorReadWarnings
-	ModeratorManageWarnings
-	UserBot
-	UserEdit
-	UserEditBroadcast
-	UserReadBlockedUsers
-	UserManageBlockedUsers
-	UserReadBroadcast
-	UserReadChat
-	UserManageChatColor
-	UserReadEmail
-	UserReadEmotes
-	UserReadFollows
-	UserReadModeratedChannels
-	UserReadSubscriptions
-	UserReadWhispers
-	UserManageWhispers
-	UserWriteChat
+	ScopeAnalyticsReadExtensions ScopeType = iota + 1
+	ScopeAnalyticsReadGames
+	ScopeBitsRead
+	ScopeChannelBot
+	ScopeChannelManageAds
+	ScopeChannelReadAds
+	ScopeChannelManageBroadcast
+	ScopeChannelReadCharity
+	ScopeChannelEditCommercial
+	ScopeChannelReadEditors
+	ScopeChannelManageExtensions
+	ScopeChannelReadGoals
+	ScopeChannelReadGuestStar
+	ScopeChannelManageGuestStar
+	ScopeChannelReadHypeTrain
+	ScopeChannelManageModerators
+	ScopeChannelReadPolls
+	ScopeChannelManagePolls
+	ScopeChannelReadPredictions
+	ScopeChannelManagePredictions
+	ScopeChannelManageRaids
+	ScopeChannelReadRedemptions
+	ScopeChannelManageRedemptions
+	ScopeChannelManageSchedule
+	ScopeChannelReadStreamKey
+	ScopeChannelReadSubscriptions
+	ScopeChannelManageVideos
+	ScopeChannelReadVips
+	ScopeChannelManageVips
+	ScopeChannelModerate
+	ScopeClipsEdit
+	ScopeModerationRead
+	ScopeModeratorManageAnnouncements
+	ScopeModeratorManageAutomod
+	ScopeModeratorReadAutomodSettings
+	ScopeModeratorManageAutomodSettings
+	ScopeModeratorReadBannedUsers
+	ScopeModeratorManageBannedUsers
+	ScopeModeratorReadBlockedTerms
+	ScopeModeratorReadChatMessages
+	ScopeModeratorManageBlockedTerms
+	ScopeModeratorManageChatMessages
+	ScopeModeratorReadChatSettings
+	ScopeModeratorManageChatSettings
+	ScopeModeratorReadChatters
+	ScopeModeratorReadFollowers
+	ScopeModeratorReadGuestStar
+	ScopeModeratorManageGuestStar
+	ScopeModeratorReadModerators
+	ScopeModeratorReadShieldMode
+	ScopeModeratorManageShieldMode
+	ScopeModeratorReadShoutouts
+	ScopeModeratorManageShoutouts
+	ScopeModeratorReadSuspiciousUsers
+	ScopeModeratorReadUnbanRequests
+	ScopeModeratorManageUnbanRequests
+	ScopeModeratorReadVips
+	ScopeModeratorReadWarnings
+	ScopeModeratorManageWarnings
+	ScopeUserBot
+	ScopeUserEdit
+	ScopeUserEditBroadcast
+	ScopeUserReadBlockedUsers
+	ScopeUserManageBlockedUsers
+	ScopeUserReadBroadcast
+	ScopeUserReadChat
+	ScopeUserManageChatColor
+	ScopeUserReadEmail
+	ScopeUserReadEmotes
+	ScopeUserReadFollows
+	ScopeUserReadModeratedChannels
+	ScopeUserReadSubscriptions
+	ScopeUserReadWhispers
+	ScopeUserManageWhispers
+	ScopeUserWriteChat
 )
 
 var ScopeTypeId = map[string]ScopeType{
-	"analytics:read:extensions":         AnalyticsReadExtensions,
-	"analytics:read:games":              AnalyticsReadGames,
-	"bits:read":                         BitsRead,
-	"channel:bot":                       ChannelBot,
-	"channel:manage:ads":                ChannelManageAds,
-	"channel:read:ads":                  ChannelReadAds,
-	"channel:manage:broadcast":          ChannelManageBroadcast,
-	"channel:read:charity":              ChannelReadCharity,
-	"channel:edit:commercial":           ChannelEditCommercial,
-	"channel:read:editors":              ChannelReadEditors,
-	"channel:manage:extensions":         ChannelManageExtensions,
-	"channel:read:goals":                ChannelReadGoals,
-	"channel:read:guest_star":           ChannelReadGuestStar,
-	"channel:manage:guest_star":         ChannelManageGuestStar,
-	"channel:read:hype_train":           ChannelReadHypeTrain,
-	"channel:manage:moderators":         ChannelManageModerators,
-	"channel:read:polls":                ChannelReadPolls,
-	"channel:manage:polls":              ChannelManagePolls,
-	"channel:read:predictions":          ChannelReadPredictions,
-	"channel:manage:predictions":        ChannelManagePredictions,
-	"channel:manage:raids":              ChannelManageRaids,
-	"channel:read:redemptions":          ChannelReadRedemptions,
-	"channel:manage:redemptions":        ChannelManageRedemptions,
-	"channel:manage:schedule":           ChannelManageSchedule,
-	"channel:read:stream_key":           ChannelReadStreamKey,
-	"channel:read:subscriptions":        ChannelReadSubscriptions,
-	"channel:manage:videos":             ChannelManageVideos,
-	"channel:read:vips":                 ChannelReadVips,
-	"channel:manage:vips":               ChannelManageVips,
-	"channel:moderate":                  ChannelModerate,
-	"clips:edit":                        ClipsEdit,
-	"moderation:read":                   ModerationRead,
-	"moderator:manage:announcements":    ModeratorManageAnnouncements,
-	"moderator:manage:automod":          ModeratorManageAutomod,
-	"moderator:read:automod_settings":   ModeratorReadAutomodSettings,
-	"moderator:manage:automod_settings": ModeratorManageAutomodSettings,
-	"moderator:read:banned_users":       ModeratorReadBannedUsers,
-	"moderator:manage:banned_users":     ModeratorManageBannedUsers,
-	"moderator:read:blocked_terms":      ModeratorReadBlockedTerms,
-	"moderator:read:chat_messages":      ModeratorReadChatMessages,
-	"moderator:manage:blocked_terms":    ModeratorManageBlockedTerms,
-	"moderator:manage:chat_messages":    ModeratorManageChatMessages,
-	"moderator:read:chat_settings":      ModeratorReadChatSettings,
-	"moderator:manage:chat_settings":    ModeratorManageChatSettings,
-	"moderator:read:chatters":           ModeratorReadChatters,
-	"moderator:read:followers":          ModeratorReadFollowers,
-	"moderator:read:guest_star":         ModeratorReadGuestStar,
-	"moderator:manage:guest_star":       ModeratorManageGuestStar,
-	"moderator:read:moderators":         ModeratorReadModerators,
-	"moderator:read:shield_mode":        ModeratorReadShieldMode,
-	"moderator:manage:shield_mode":      ModeratorManageShieldMode,
-	"moderator:read:shoutouts":          ModeratorReadShoutouts,
-	"moderator:manage:shoutouts":        ModeratorManageShoutouts,
-	"moderator:read:suspicious_users":   ModeratorReadSuspiciousUsers,
-	"moderator:read:unban_requests":     ModeratorReadUnbanRequests,
-	"moderator:manage:unban_requests":   ModeratorManageUnbanRequests,
-	"moderator:read:vips":               ModeratorReadVips,
-	"moderator:read:warnings":           ModeratorReadWarnings,
-	"moderator:manage:warnings":         ModeratorManageWarnings,
-	"user:bot":                          UserBot,
-	"user:edit":                         UserEdit,
-	"user:edit:broadcast":               UserEditBroadcast,
-	"user:read:blocked_users":           UserReadBlockedUsers,
-	"user:manage:blocked_users":         UserManageBlockedUsers,
-	"user:read:broadcast":               UserReadBroadcast,
-	"user:read:chat":                    UserReadChat,
-	"user:manage:chat_color":            UserManageChatColor,
-	"user:read:email":                   UserReadEmail,
-	"user:read:emotes":                  UserReadEmotes,
-	"user:read:follows":                 UserReadFollows,
-	"user:read:moderated_channels":      UserReadModeratedChannels,
-	"user:read:subscriptions":           UserReadSubscriptions,
-	"user:read:whispers":                UserReadWhispers,
-	"user:manage:whispers":              UserManageWhispers,
-	"user:write:chat":                   UserWriteChat,
+	"analytics:read:extensions":         ScopeAnalyticsReadExtensions,
+	"analytics:read:games":              ScopeAnalyticsReadGames,
+	"bits:read":                         ScopeBitsRead,
+	"channel:bot":                       ScopeChannelBot,
+	"channel:manage:ads":                ScopeChannelManageAds,
+	"channel:read:ads":                  ScopeChannelReadAds,
+	"channel:manage:broadcast":          ScopeChannelManageBroadcast,
+	"channel:read:charity":              ScopeChannelReadCharity,
+	"channel:edit:commercial":           ScopeChannelEditCommercial,
+	"channel:read:editors":              ScopeChannelReadEditors,
+	"channel:manage:extensions":         ScopeChannelManageExtensions,
+	"channel:read:goals":                ScopeChannelReadGoals,
+	"channel:read:guest_star":           ScopeChannelReadGuestStar,
+	"channel:manage:guest_star":         ScopeChannelManageGuestStar,
+	"channel:read:hype_train":           ScopeChannelReadHypeTrain,
+	"channel:manage:moderators":         ScopeChannelManageModerators,
+	"channel:read:polls":                ScopeChannelReadPolls,
+	"channel:manage:polls":              ScopeChannelManagePolls,
+	"channel:read:predictions":          ScopeChannelReadPredictions,
+	"channel:manage:predictions":        ScopeChannelManagePredictions,
+	"channel:manage:raids":              ScopeChannelManageRaids,
+	"channel:read:redemptions":          ScopeChannelReadRedemptions,
+	"channel:manage:redemptions":        ScopeChannelManageRedemptions,
+	"channel:manage:schedule":           ScopeChannelManageSchedule,
+	"channel:read:stream_key":           ScopeChannelReadStreamKey,
+	"channel:read:subscriptions":        ScopeChannelReadSubscriptions,
+	"channel:manage:videos":             ScopeChannelManageVideos,
+	"channel:read:vips":                 ScopeChannelReadVips,
+	"channel:manage:vips":               ScopeChannelManageVips,
+	"channel:moderate":                  ScopeChannelModerate,
+	"clips:edit":                        ScopeClipsEdit,
+	"moderation:read":                   ScopeModerationRead,
+	"moderator:manage:announcements":    ScopeModeratorManageAnnouncements,
+	"moderator:manage:automod":          ScopeModeratorManageAutomod,
+	"moderator:read:automod_settings":   ScopeModeratorReadAutomodSettings,
+	"moderator:manage:automod_settings": ScopeModeratorManageAutomodSettings,
+	"moderator:read:banned_users":       ScopeModeratorReadBannedUsers,
+	"moderator:manage:banned_users":     ScopeModeratorManageBannedUsers,
+	"moderator:read:blocked_terms":      ScopeModeratorReadBlockedTerms,
+	"moderator:read:chat_messages":      ScopeModeratorReadChatMessages,
+	"moderator:manage:blocked_terms":    ScopeModeratorManageBlockedTerms,
+	"moderator:manage:chat_messages":    ScopeModeratorManageChatMessages,
+	"moderator:read:chat_settings":      ScopeModeratorReadChatSettings,
+	"moderator:manage:chat_settings":    ScopeModeratorManageChatSettings,
+	"moderator:read:chatters":           ScopeModeratorReadChatters,
+	"moderator:read:followers":          ScopeModeratorReadFollowers,
+	"moderator:read:guest_star":         ScopeModeratorReadGuestStar,
+	"moderator:manage:guest_star":       ScopeModeratorManageGuestStar,
+	"moderator:read:moderators":         ScopeModeratorReadModerators,
+	"moderator:read:shield_mode":        ScopeModeratorReadShieldMode,
+	"moderator:manage:shield_mode":      ScopeModeratorManageShieldMode,
+	"moderator:read:shoutouts":          ScopeModeratorReadShoutouts,
+	"moderator:manage:shoutouts":        ScopeModeratorManageShoutouts,
+	"moderator:read:suspicious_users":   ScopeModeratorReadSuspiciousUsers,
+	"moderator:read:unban_requests":     ScopeModeratorReadUnbanRequests,
+	"moderator:manage:unban_requests":   ScopeModeratorManageUnbanRequests,
+	"moderator:read:vips":               ScopeModeratorReadVips,
+	"moderator:read:warnings":           ScopeModeratorReadWarnings,
+	"moderator:manage:warnings":         ScopeModeratorManageWarnings,
+	"user:bot":                          ScopeUserBot,
+	"user:edit":                         ScopeUserEdit,
+	"user:edit:broadcast":               ScopeUserEditBroadcast,
+	"user:read:blocked_users":           ScopeUserReadBlockedUsers,
+	"user:manage:blocked_users":         ScopeUserManageBlockedUsers,
+	"user:read:broadcast":               ScopeUserReadBroadcast,
+	"user:read:chat":                    ScopeUserReadChat,
+	"user:manage:chat_color":            ScopeUserManageChatColor,
+	"user:read:email":                   ScopeUserReadEmail,
+	"user:read:emotes":                  ScopeUserReadEmotes,
+	"user:read:follows":                 ScopeUserReadFollows,
+	"user:read:moderated_channels":      ScopeUserReadModeratedChannels,
+	"user:read:subscriptions":           ScopeUserReadSubscriptions,
+	"user:read:whispers":                ScopeUserReadWhispers,
+	"user:manage:whispers":              ScopeUserManageWhispers,
+	"user:write:chat":                   ScopeUserWriteChat,
 }
 
 var ScopeTypeName = map[ScopeType]string{
-	AnalyticsReadExtensions:        "analytics:read:extensions",
-	AnalyticsReadGames:             "analytics:read:games",
-	BitsRead:                       "bits:read",
-	ChannelBot:                     "channel:bot",
-	ChannelManageAds:               "channel:manage:ads",
-	ChannelReadAds:                 "channel:read:ads",
-	ChannelManageBroadcast:         "channel:manage:broadcast",
-	ChannelReadCharity:             "channel:read:charity",
-	ChannelEditCommercial:          "channel:edit:commercial",
-	ChannelReadEditors:             "channel:read:editors",
-	ChannelManageExtensions:        "channel:manage:extensions",
-	ChannelReadGoals:               "channel:read:goals",
-	ChannelReadGuestStar:           "channel:read:guest_star",
-	ChannelManageGuestStar:         "channel:manage:guest_star",
-	ChannelReadHypeTrain:           "channel:read:hype_train",
-	ChannelManageModerators:        "channel:manage:moderators",
-	ChannelReadPolls:               "channel:read:polls",
-	ChannelManagePolls:             "channel:manage:polls",
-	ChannelReadPredictions:         "channel:read:predictions",
-	ChannelManagePredictions:       "channel:manage:predictions",
-	ChannelManageRaids:             "channel:manage:raids",
-	ChannelReadRedemptions:         "channel:read:redemptions",
-	ChannelManageRedemptions:       "channel:manage:redemptions",
-	ChannelManageSchedule:          "channel:manage:schedule",
-	ChannelReadStreamKey:           "channel:read:stream_key",
-	ChannelReadSubscriptions:       "channel:read:subscriptions",
-	ChannelManageVideos:            "channel:manage:videos",
-	ChannelReadVips:                "channel:read:vips",
-	ChannelManageVips:              "channel:manage:vips",
-	ChannelModerate:                "channel:moderate",
-	ClipsEdit:                      "clips:edit",
-	ModerationRead:                 "moderation:read",
-	ModeratorManageAnnouncements:   "moderator:manage:announcements",
-	ModeratorManageAutomod:         "moderator:manage:automod",
-	ModeratorReadAutomodSettings:   "moderator:read:automod_settings",
-	ModeratorManageAutomodSettings: "moderator:manage:automod_settings",
-	ModeratorReadBannedUsers:       "moderator:read:banned_users",
-	ModeratorManageBannedUsers:     "moderator:manage:banned_users",
-	ModeratorReadBlockedTerms:      "moderator:read:blocked_terms",
-	ModeratorReadChatMessages:      "moderator:read:chat_messages",
-	ModeratorManageBlockedTerms:    "moderator:manage:blocked_terms",
-	ModeratorManageChatMessages:    "moderator:manage:chat_messages",
-	ModeratorReadChatSettings:      "moderator:read:chat_settings",
-	ModeratorManageChatSettings:    "moderator:manage:chat_settings",
-	ModeratorReadChatters:          "moderator:read:chatters",
-	ModeratorReadFollowers:         "moderator:read:followers",
-	ModeratorReadGuestStar:         "moderator:read:guest_star",
-	ModeratorManageGuestStar:       "moderator:manage:guest_star",
-	ModeratorReadModerators:        "moderator:read:moderators",
-	ModeratorReadShieldMode:        "moderator:read:shield_mode",
-	ModeratorManageShieldMode:      "moderator:manage:shield_mode",
-	ModeratorReadShoutouts:         "moderator:read:shoutouts",
-	ModeratorManageShoutouts:       "moderator:manage:shoutouts",
-	ModeratorReadSuspiciousUsers:   "moderator:read:suspicious_users",
-	ModeratorReadUnbanRequests:     "moderator:read:unban_requests",
-	ModeratorManageUnbanRequests:   "moderator:manage:unban_requests",
-	ModeratorReadVips:              "moderator:read:vips",
-	ModeratorReadWarnings:          "moderator:read:warnings",
-	ModeratorManageWarnings:        "moderator:manage:warnings",
-	UserBot:                        "user:bot",
-	UserEdit:                       "user:edit",
-	UserEditBroadcast:              "user:edit:broadcast",
-	UserReadBlockedUsers:           "user:read:blocked_users",
-	UserManageBlockedUsers:         "user:manage:blocked_users",
-	UserReadBroadcast:              "user:read:broadcast",
-	UserReadChat:                   "user:read:chat",
-	UserManageChatColor:            "user:manage:chat_color",
-	UserReadEmail:                  "user:read:email",
-	UserReadEmotes:                 "user:read:emotes",
-	UserReadFollows:                "user:read:follows",
-	UserReadModeratedChannels:      "user:read:moderated_channels",
-	UserReadSubscriptions:          "user:read:subscriptions",
-	UserReadWhispers:               "user:read:whispers",
-	UserManageWhispers:             "user:manage:whispers",
-	UserWriteChat:                  "user:write:chat",
+	ScopeAnalyticsReadExtensions:        "analytics:read:extensions",
+	ScopeAnalyticsReadGames:             "analytics:read:games",
+	ScopeBitsRead:                       "bits:read",
+	ScopeChannelBot:                     "channel:bot",
+	ScopeChannelManageAds:               "channel:manage:ads",
+	ScopeChannelReadAds:                 "channel:read:ads",
+	ScopeChannelManageBroadcast:         "channel:manage:broadcast",
+	ScopeChannelReadCharity:             "channel:read:charity",
+	ScopeChannelEditCommercial:          "channel:edit:commercial",
+	ScopeChannelReadEditors:             "channel:read:editors",
+	ScopeChannelManageExtensions:        "channel:manage:extensions",
+	ScopeChannelReadGoals:               "channel:read:goals",
+	ScopeChannelReadGuestStar:           "channel:read:guest_star",
+	ScopeChannelManageGuestStar:         "channel:manage:guest_star",
+	ScopeChannelReadHypeTrain:           "channel:read:hype_train",
+	ScopeChannelManageModerators:        "channel:manage:moderators",
+	ScopeChannelReadPolls:               "channel:read:polls",
+	ScopeChannelManagePolls:             "channel:manage:polls",
+	ScopeChannelReadPredictions:         "channel:read:predictions",
+	ScopeChannelManagePredictions:       "channel:manage:predictions",
+	ScopeChannelManageRaids:             "channel:manage:raids",
+	ScopeChannelReadRedemptions:         "channel:read:redemptions",
+	ScopeChannelManageRedemptions:       "channel:manage:redemptions",
+	ScopeChannelManageSchedule:          "channel:manage:schedule",
+	ScopeChannelReadStreamKey:           "channel:read:stream_key",
+	ScopeChannelReadSubscriptions:       "channel:read:subscriptions",
+	ScopeChannelManageVideos:            "channel:manage:videos",
+	ScopeChannelReadVips:                "channel:read:vips",
+	ScopeChannelManageVips:              "channel:manage:vips",
+	ScopeChannelModerate:                "channel:moderate",
+	ScopeClipsEdit:                      "clips:edit",
+	ScopeModerationRead:                 "moderation:read",
+	ScopeModeratorManageAnnouncements:   "moderator:manage:announcements",
+	ScopeModeratorManageAutomod:         "moderator:manage:automod",
+	ScopeModeratorReadAutomodSettings:   "moderator:read:automod_settings",
+	ScopeModeratorManageAutomodSettings: "moderator:manage:automod_settings",
+	ScopeModeratorReadBannedUsers:       "moderator:read:banned_users",
+	ScopeModeratorManageBannedUsers:     "moderator:manage:banned_users",
+	ScopeModeratorReadBlockedTerms:      "moderator:read:blocked_terms",
+	ScopeModeratorReadChatMessages:      "moderator:read:chat_messages",
+	ScopeModeratorManageBlockedTerms:    "moderator:manage:blocked_terms",
+	ScopeModeratorManageChatMessages:    "moderator:manage:chat_messages",
+	ScopeModeratorReadChatSettings:      "moderator:read:chat_settings",
+	ScopeModeratorManageChatSettings:    "moderator:manage:chat_settings",
+	ScopeModeratorReadChatters:          "moderator:read:chatters",
+	ScopeModeratorReadFollowers:         "moderator:read:followers",
+	ScopeModeratorReadGuestStar:         "moderator:read:guest_star",
+	ScopeModeratorManageGuestStar:       "moderator:manage:guest_star",
+	ScopeModeratorReadModerators:        "moderator:read:moderators",
+	ScopeModeratorReadShieldMode:        "moderator:read:shield_mode",
+	ScopeModeratorManageShieldMode:      "moderator:manage:shield_mode",
+	ScopeModeratorReadShoutouts:         "moderator:read:shoutouts",
+	ScopeModeratorManageShoutouts:       "moderator:manage:shoutouts",
+	ScopeModeratorReadSuspiciousUsers:   "moderator:read:suspicious_users",
+	ScopeModeratorReadUnbanRequests:     "moderator:read:unban_requests",
+	ScopeModeratorManageUnbanRequests:   "moderator:manage:unban_requests",
+	ScopeModeratorReadVips:              "moderator:read:vips",
+	ScopeModeratorReadWarnings:          "moderator:read:warnings",
+	ScopeModeratorManageWarnings:        "moderator:manage:warnings",
+	ScopeUserBot:                        "user:bot",
+	ScopeUserEdit:                       "user:edit",
+	ScopeUserEditBroadcast:              "user:edit:broadcast",
+	ScopeUserReadBlockedUsers:           "user:read:blocked_users",
+	ScopeUserManageBlockedUsers:         "user:manage:blocked_users",
+	ScopeUserReadBroadcast:              "user:read:broadcast",
+	ScopeUserReadChat:                   "user:read:chat",
+	ScopeUserManageChatColor:            "user:manage:chat_color",
+	ScopeUserReadEmail:                  "user:read:email",
+	ScopeUserReadEmotes:                 "user:read:emotes",
+	ScopeUserReadFollows:                "user:read:follows",
+	ScopeUserReadModeratedChannels:      "user:read:moderated_channels",
+	ScopeUserReadSubscriptions:          "user:read:subscriptions",
+	ScopeUserReadWhispers:               "user:read:whispers",
+	ScopeUserManageWhispers:             "user:manage:whispers",
+	ScopeUserWriteChat:                  "user:write:chat",
 }
 
 func (t *ScopeType) MarshalJSON() ([]byte, error) {
