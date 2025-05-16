@@ -9,13 +9,12 @@ import (
 	"time"
 )
 
-func ValidateToken(token string) (*ValidTokenResponse, *FailedRequestResponse, error) {
-	var v ValidTokenResponse
-	var f FailedRequestResponse
+func ValidateToken(token string) (*tokenValidationResponse, error) {
+	var t tokenValidationResponse
 
 	req, err := http.NewRequest("GET", ValidationUrl, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	req.Header.Add("Authorization", "Bearer "+token)
@@ -23,35 +22,37 @@ func ValidateToken(token string) (*ValidTokenResponse, *FailedRequestResponse, e
 
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	b, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	if res.StatusCode != 200 {
-		err = json.Unmarshal(b, &f)
+		t.Status = FailureStatus
+		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
-			return nil, nil, errors.New(e)
+			return nil, errors.New(e)
 		}
 
-		return nil, &f, nil
+		return &t, nil
 	}
 
-	err = json.Unmarshal(b, &v)
+	t.Status = SuccessStatus
+	err = json.Unmarshal(b, &t.ValidationData)
 	if err != nil {
 		e := fmt.Sprintf("error while parsing valid token response: %s", err)
-		return nil, nil, errors.New(e)
+		return nil, errors.New(e)
 	}
 
-	return &v, nil, nil
+	return &t, nil
 }
 
-func RevokeToken(token string, clientId string) (*FailedRequestResponse, error) {
-	var f FailedRequestResponse
+func RevokeToken(token string, clientId string) (*tokenRevocationResponse, error) {
+	var t tokenRevocationResponse
 
 	req, err := http.NewRequest("POST", RevocationUrl, nil)
 	if err != nil {
@@ -77,13 +78,15 @@ func RevokeToken(token string, clientId string) (*FailedRequestResponse, error) 
 	}
 
 	if res.StatusCode != 200 {
-		err = json.Unmarshal(b, &f)
+		t.Status = FailureStatus
+		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
 			return nil, errors.New(e)
 		}
-		return &f, nil
+		return &t, nil
 	}
 
-	return nil, nil
+	t.Status = SuccessStatus
+	return &t, nil
 }

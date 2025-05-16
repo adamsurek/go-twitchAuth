@@ -23,13 +23,12 @@ func NewClientCredentialsGrantAuthenticator(clientId string, clientSecret string
 	}
 }
 
-func (a *ClientCredentialsGrantAuthenticator) GetToken() (*AccessTokenRequestResponse, *FailedRequestResponse, error) {
-	var t AccessTokenRequestResponse
-	var f FailedRequestResponse
+func (a *ClientCredentialsGrantAuthenticator) GetToken() (*tokenResponse, error) {
+	var t tokenResponse
 
 	req, err := http.NewRequest("POST", TokenUrl, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
@@ -43,28 +42,30 @@ func (a *ClientCredentialsGrantAuthenticator) GetToken() (*AccessTokenRequestRes
 	client := http.Client{Timeout: 60 * time.Second}
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	b, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	if res.StatusCode != 200 {
-		err = json.Unmarshal(b, &f)
+		t.Status = FailureStatus
+		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
-			return nil, nil, errors.New(e)
+			return nil, errors.New(e)
 		}
-		return nil, &f, nil
+		return &t, nil
 	}
 
-	err = json.Unmarshal(b, &t)
+	t.Status = SuccessStatus
+	err = json.Unmarshal(b, &t.TokenData)
 	if err != nil {
-		e := fmt.Sprintf("error while parsing valid token response: %s", err)
-		return nil, nil, errors.New(e)
+		e := fmt.Sprintf("error while parsing token response: %s", err)
+		return nil, errors.New(e)
 	}
 
-	return &t, nil, nil
+	return &t, nil
 }
