@@ -31,7 +31,7 @@ func ValidateToken(token string) (*TokenValidationResponse, error) {
 	}
 
 	if res.StatusCode != 200 {
-		t.ValidationStatus = FailureStatus
+		t.ValidationStatus = StatusFailure
 		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
@@ -41,7 +41,7 @@ func ValidateToken(token string) (*TokenValidationResponse, error) {
 		return &t, nil
 	}
 
-	t.ValidationStatus = SuccessStatus
+	t.ValidationStatus = StatusSuccess
 	err = json.Unmarshal(b, &t.ValidationData)
 	if err != nil {
 		e := fmt.Sprintf("error while parsing valid token response: %s", err)
@@ -78,7 +78,7 @@ func RevokeToken(token string, clientId string) (*TokenRevocationResponse, error
 	}
 
 	if res.StatusCode != 200 {
-		t.ValidationStatus = FailureStatus
+		t.ValidationStatus = StatusFailure
 		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
@@ -87,6 +87,6 @@ func RevokeToken(token string, clientId string) (*TokenRevocationResponse, error
 		return &t, nil
 	}
 
-	t.ValidationStatus = SuccessStatus
+	t.ValidationStatus = StatusSuccess
 	return &t, nil
 }

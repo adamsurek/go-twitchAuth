@@ -3,13 +3,13 @@
 type responseStatus int
 
 const (
-	FailureStatus responseStatus = iota
-	SuccessStatus
+	StatusFailure responseStatus = iota
+	StatusSuccess
 )
 
 var statusName = map[responseStatus]string{
-	FailureStatus: "failure",
-	SuccessStatus: "success",
+	StatusFailure: "failure",
+	StatusSuccess: "success",
 }
 
 func (rs responseStatus) String() string {

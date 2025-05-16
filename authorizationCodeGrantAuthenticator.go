@@ -98,7 +98,7 @@ func (a *AuthorizationCodeGrantAuthenticator) GetToken(code string) (*TokenRespo
 	}
 
 	if res.StatusCode != 200 {
-		t.TokenRequestStatus = FailureStatus
+		t.TokenRequestStatus = StatusFailure
 		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
@@ -107,7 +107,7 @@ func (a *AuthorizationCodeGrantAuthenticator) GetToken(code string) (*TokenRespo
 		return &t, nil
 	}
 
-	t.TokenRequestStatus = SuccessStatus
+	t.TokenRequestStatus = StatusSuccess
 	err = json.Unmarshal(b, &t.TokenData)
 	if err != nil {
 		e := fmt.Sprintf("error while parsing token response: %s", err)
