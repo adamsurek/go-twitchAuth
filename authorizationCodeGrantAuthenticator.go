@@ -38,7 +38,7 @@ func NewAuthorizationCodeGrantAuthenticator(clientId string, clientSecret string
 }
 
 func (a *AuthorizationCodeGrantAuthenticator) GenerateAuthorizationUrl() (*url.URL, error) {
-	authUrl, err := url.Parse(AuthorizationUrl)
+	authUrl, err := url.Parse(authorizationUrl)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (a *AuthorizationCodeGrantAuthenticator) getScopeNames() []string {
 func (a *AuthorizationCodeGrantAuthenticator) GetToken(code string) (*TokenResponse, error) {
 	var t TokenResponse
 
-	req, err := http.NewRequest("POST", TokenUrl, nil)
+	req, err := http.NewRequest("POST", tokenUrl, nil)
 	if err != nil {
 		return nil, err
 	}

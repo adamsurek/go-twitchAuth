@@ -28,7 +28,7 @@ func NewImplicitGrantAuthenticator(clientId string, forceVerify bool, redirectUr
 }
 
 func (a *ImplicitGrantAuthenticator) GenerateAuthorizationUri() (*url.URL, error) {
-	authUrl, err := url.Parse(AuthorizationUrl)
+	authUrl, err := url.Parse(authorizationUrl)
 	if err != nil {
 		return nil, err
 	}

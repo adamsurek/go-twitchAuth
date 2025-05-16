@@ -26,7 +26,7 @@ func NewClientCredentialsGrantAuthenticator(clientId string, clientSecret string
 func (a *ClientCredentialsGrantAuthenticator) GetToken() (*TokenResponse, error) {
 	var t TokenResponse
 
-	req, err := http.NewRequest("POST", TokenUrl, nil)
+	req, err := http.NewRequest("POST", tokenUrl, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -12,7 +12,7 @@ import (
 func ValidateToken(token string) (*TokenValidationResponse, error) {
 	var t TokenValidationResponse
 
-	req, err := http.NewRequest("GET", ValidationUrl, nil)
+	req, err := http.NewRequest("GET", validationUrl, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func ValidateToken(token string) (*TokenValidationResponse, error) {
 func RevokeToken(token string, clientId string) (*TokenRevocationResponse, error) {
 	var t TokenRevocationResponse
 
-	req, err := http.NewRequest("POST", RevocationUrl, nil)
+	req, err := http.NewRequest("POST", revocationUrl, nil)
 	if err != nil {
 		return nil, err
 	}

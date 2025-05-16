@@ -1,8 +1,8 @@
 ﻿package go_twitchAuth
 
 const (
-	AuthorizationUrl = "https://id.twitch.tv/oauth2/authorize"
-	TokenUrl         = "https://id.twitch.tv/oauth2/token"
-	ValidationUrl    = "https://id.twitch.tv/oauth2/validate"
-	RevocationUrl    = "https://id.twitch.tv/oauth2/revoke"
+	authorizationUrl = "https://id.twitch.tv/oauth2/authorize"
+	tokenUrl         = "https://id.twitch.tv/oauth2/token"
+	validationUrl    = "https://id.twitch.tv/oauth2/validate"
+	revocationUrl    = "https://id.twitch.tv/oauth2/revoke"
 )
