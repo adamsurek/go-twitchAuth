@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// ValidateToken confirms, using the Twitch Helix API, whether the supplied bearer token is valid.
 func ValidateToken(token string) (*TokenValidationResponse, error) {
 	var t TokenValidationResponse
 
@@ -51,6 +52,7 @@ func ValidateToken(token string) (*TokenValidationResponse, error) {
 	return &t, nil
 }
 
+// RevokeToken revokes the supplied active bearer token.
 func RevokeToken(token string, clientId string) (*TokenRevocationResponse, error) {
 	var t TokenRevocationResponse
 
@@ -78,7 +80,7 @@ func RevokeToken(token string, clientId string) (*TokenRevocationResponse, error
 	}
 
 	if res.StatusCode != 200 {
-		t.ValidationStatus = StatusFailure
+		t.RevocationStatus = StatusFailure
 		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
@@ -87,6 +89,6 @@ func RevokeToken(token string, clientId string) (*TokenRevocationResponse, error
 		return &t, nil
 	}
 
-	t.ValidationStatus = StatusSuccess
+	t.RevocationStatus = StatusSuccess
 	return &t, nil
 }

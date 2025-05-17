@@ -64,7 +64,7 @@ func (a *ImplicitGrantAuthenticator) GenerateAuthorizationUrl() (*url.URL, error
 func (a *ImplicitGrantAuthenticator) getScopeNames() []string {
 	var scopeNames []string
 	for _, s := range a.requestedScopes {
-		scopeNames = append(scopeNames, ScopeTypeName[s])
+		scopeNames = append(scopeNames, scopeTypeName[s])
 	}
 
 	return scopeNames

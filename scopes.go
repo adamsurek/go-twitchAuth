@@ -5,87 +5,264 @@ import (
 	"encoding/json"
 )
 
+/*
+ScopeType represents the level of access an app has on the Twitch API.
+
+Full list of scopes: https://dev.twitch.tv/docs/authentication/scopes/
+*/
 type ScopeType int
 
 const (
+	// ScopeAnalyticsReadExtensions allows app to view analytics data for the Twitch extensions owned by the
+	// authenticated account.
 	ScopeAnalyticsReadExtensions ScopeType = iota + 1
+
+	// ScopeAnalyticsReadGames allows app to view analytics data for the games owned by the authenticated account.
 	ScopeAnalyticsReadGames
+
+	// ScopeBitsRead allows app to view bits information for a channel.
 	ScopeBitsRead
+
+	// ScopeChannelBot allows app to join the user's channel as a bot user and perform chat-related actions.
 	ScopeChannelBot
+
+	// ScopeChannelManageAds allows app to manage the ads schedule on a channel.
 	ScopeChannelManageAds
+
+	// ScopeChannelReadAds allows app to read the ads schedule and details on the user's channel.
 	ScopeChannelReadAds
+
+	// ScopeChannelManageBroadcast allows app to manage a channel's broadcast config, including updating channel config
+	// and managing stream markers and tags.
 	ScopeChannelManageBroadcast
+
+	// ScopeChannelReadCharity allows app to read charity campaign details and user donations on the user's channel.
 	ScopeChannelReadCharity
+
+	// ScopeChannelEditCommercial allows app to run commercials on a channel.
 	ScopeChannelEditCommercial
+
+	// ScopeChannelReadEditors allows app to view a list of editors in a channel.
 	ScopeChannelReadEditors
+
+	// ScopeChannelManageExtensions allows app to manage a channel's Extension config, including activation Extensions.
 	ScopeChannelManageExtensions
+
+	// ScopeChannelReadGoals allows app to view Creator Goals for a channel.
 	ScopeChannelReadGoals
+
+	// ScopeChannelReadGuestStar allows app to read Guest Star details for the user's channel.
 	ScopeChannelReadGuestStar
+
+	// ScopeChannelManageGuestStar allows app to manage Guest Star for the user's channel.
 	ScopeChannelManageGuestStar
+
+	// ScopeChannelReadHypeTrain allows app to view Hype Train information for a channel.
 	ScopeChannelReadHypeTrain
+
+	// ScopeChannelManageModerators allows app to add and remove moderators on the user's channel.
 	ScopeChannelManageModerators
+
+	// ScopeChannelReadPolls allows app to view a channel's polls.
 	ScopeChannelReadPolls
+
+	// ScopeChannelManagePolls allows app to manage a channel's polls.
 	ScopeChannelManagePolls
+
+	// ScopeChannelReadPredictions allows app to view a channel's Channel Point Predictions.
 	ScopeChannelReadPredictions
+
+	// ScopeChannelManagePredictions allows app to manage a channel's Channel Point Predictions.
 	ScopeChannelManagePredictions
+
+	// ScopeChannelManageRaids allows app to manage a channel raiding another channel.
 	ScopeChannelManageRaids
+
+	// ScopeChannelReadRedemptions allows app to view Channel Points custom rewards and their redemptions on a channel.
 	ScopeChannelReadRedemptions
+
+	// ScopeChannelManageRedemptions allows app to manage Channel Points custom rewards and their redemptions on a channel.
 	ScopeChannelManageRedemptions
+
+	// ScopeChannelManageSchedule allows app to manage a channel's stream schedule.
 	ScopeChannelManageSchedule
+
+	// ScopeChannelReadStreamKey allows app to view an authorized user's stream key.
 	ScopeChannelReadStreamKey
+
+	// ScopeChannelReadSubscriptions allows app to view a list of all subscribers to a channel, and check if the user is
+	// subscribed to a channel.
 	ScopeChannelReadSubscriptions
+
+	// ScopeChannelManageVideos allows app to manage a channel's videos, including deleting videos.
 	ScopeChannelManageVideos
+
+	// ScopeChannelReadVips allows app to view a list of VIPs in the user's channel.
 	ScopeChannelReadVips
+
+	// ScopeChannelManageVips allows app to add and remove VIPs in the user's channel.
 	ScopeChannelManageVips
+
+	// ScopeChannelModerate allows app to perform moderation actions in a channel.
 	ScopeChannelModerate
+
+	// ScopeClipsEdit allows app to manage Clips for a channel.
 	ScopeClipsEdit
+
+	// ScopeModerationRead allows app to view moderation data including Moderators, Bans, Timeouts, and
+	// Automod settings for channels where the authenticated user is a moderator.
 	ScopeModerationRead
+
+	// ScopeModeratorManageAnnouncements allows app to send announcements in channels where the authenticated user
+	// is a moderator.
 	ScopeModeratorManageAnnouncements
+
+	// ScopeModeratorManageAutomod allows app to manage messages held for review by AutoMod in channels where
+	// the user is a moderator.
 	ScopeModeratorManageAutomod
+
+	// ScopeModeratorReadAutomodSettings allows app to view a broadcaster's AutoMod settings for channels where the
+	// user is a moderator.
 	ScopeModeratorReadAutomodSettings
+
+	// ScopeModeratorManageAutomodSettings allows app to manage a broadcaster's AutoMod settings for channels where
+	// the user is a moderator.
 	ScopeModeratorManageAutomodSettings
+
+	// ScopeModeratorReadBannedUsers allows app to view a list of bans and unbans for channels where the authenticated
+	//user is a moderator.
 	ScopeModeratorReadBannedUsers
+
+	// ScopeModeratorManageBannedUsers allows app to ban and unban users in channels where the authenticated user is
+	// a moderator.
 	ScopeModeratorManageBannedUsers
+
+	// ScopeModeratorReadBlockedTerms allows app to view a broadcaster's list of blocked terms.
 	ScopeModeratorReadBlockedTerms
+
+	// ScopeModeratorReadChatMessages allows app to read deleted chat messages in a channel.
 	ScopeModeratorReadChatMessages
+
+	// ScopeModeratorManageBlockedTerms allows app to manage a broadcaster's list of blocked terms.
 	ScopeModeratorManageBlockedTerms
+
+	// ScopeModeratorManageChatMessages allows app to delete chat messages in channels where the authenticated user
+	// is a moderator.
 	ScopeModeratorManageChatMessages
+
+	// ScopeModeratorReadChatSettings allows app to view a broadcaster's chat room settings.
 	ScopeModeratorReadChatSettings
+
+	// ScopeModeratorManageChatSettings allows app to manage a broadcaster's chat room settings.
 	ScopeModeratorManageChatSettings
+
+	// ScopeModeratorReadChatters allows app to view the chatters in a broadcaster's chatroom.
 	ScopeModeratorReadChatters
+
+	// ScopeModeratorReadFollowers allows app to view the followers of a broadcaster.
 	ScopeModeratorReadFollowers
+
+	// ScopeModeratorReadGuestStar allows app to view Guest Star details for channels where the authenticated user
+	// is a Guest Star moderator.
 	ScopeModeratorReadGuestStar
+
+	// ScopeModeratorManageGuestStar allows app to manage Guest Star details for channels where the authenticated
+	// user is a Guest Star moderator.
 	ScopeModeratorManageGuestStar
+
+	// ScopeModeratorReadModerators allows app to view a list of moderators in channels where the authenticated
+	// user is a moderator.
 	ScopeModeratorReadModerators
+
+	// ScopeModeratorReadShieldMode allows app to view a broadcaster's Shield Mode status.
 	ScopeModeratorReadShieldMode
+
+	// ScopeModeratorManageShieldMode allows app to manage a broadcaster's Shield Mode status.
 	ScopeModeratorManageShieldMode
+
+	// ScopeModeratorReadShoutouts allows app to view a broadcaster's shoutouts.
 	ScopeModeratorReadShoutouts
+
+	// ScopeModeratorManageShoutouts allows app to manage a broadcaster's shoutouts.
 	ScopeModeratorManageShoutouts
+
+	// ScopeModeratorReadSuspiciousUsers allows app to view chat messages from suspicious users and see users flagged
+	// as suspicious in channels where the authenticated user is a moderator.
 	ScopeModeratorReadSuspiciousUsers
+
+	// ScopeModeratorReadUnbanRequests allows app to view a broadcaster's unban requests.
 	ScopeModeratorReadUnbanRequests
+
+	// ScopeModeratorManageUnbanRequests allows app to manage a broadcaster's unban requests.
 	ScopeModeratorManageUnbanRequests
+
+	// ScopeModeratorReadVips allows app to view the list of VIPs for channels where the authenticated user is
+	// a moderator.
 	ScopeModeratorReadVips
+
+	// ScopeModeratorReadWarnings allows app to view warnings in channels where the authenticated user is a moderator.
 	ScopeModeratorReadWarnings
+
+	// ScopeModeratorManageWarnings allows app to warn users in channels where the authenticated user is a moderator.
 	ScopeModeratorManageWarnings
+
+	// ScopeUserBot allows app to join a chat channel as the authenticated user but appearing as a bot and perform
+	// actions as the user.
 	ScopeUserBot
+
+	// ScopeUserEdit allows app to update the authenticated user's information.
 	ScopeUserEdit
+
+	// ScopeUserEditBroadcast allows app to view and edit the authenticated user's broadcasting config, including
+	// Extension configs.
 	ScopeUserEditBroadcast
+
+	// ScopeUserReadBlockedUsers allows app to view the authenticated user's block list.
 	ScopeUserReadBlockedUsers
+
+	// ScopeUserManageBlockedUsers allows app to manage the authenticated user's block list.
 	ScopeUserManageBlockedUsers
+
+	// ScopeUserReadBroadcast allows app to view the authenticated user's broadcasting config, including
+	// Extension configs.
 	ScopeUserReadBroadcast
+
+	// ScopeUserReadChat allows app to receive chatroom messages and informational notifications related to a
+	// channel's chatroom.
 	ScopeUserReadChat
+
+	// ScopeUserManageChatColor allows app to update the color used for the authenticated user's name in chat.
 	ScopeUserManageChatColor
+
+	// ScopeUserReadEmail allows app to view the authenticated user's email address,
 	ScopeUserReadEmail
+
+	// ScopeUserReadEmotes allows app to view the emotes available to the authenticated user.
 	ScopeUserReadEmotes
+
+	// ScopeUserReadFollows allows app to view the list of channels that the authenticated user follows.
 	ScopeUserReadFollows
+
+	// ScopeUserReadModeratedChannels allows app to view the list of channels where the authenticated user is a
+	// moderator.
 	ScopeUserReadModeratedChannels
+
+	// ScopeUserReadSubscriptions allows app to view the list of channels that the authenticated user is subscribed to.
 	ScopeUserReadSubscriptions
+
+	// ScopeUserReadWhispers allows app to receive whispers sent to the authenticated user.
 	ScopeUserReadWhispers
+
+	// ScopeUserManageWhispers allows app to receive whispers sent to the authenticated user, and send whispers on their
+	// behalf.
 	ScopeUserManageWhispers
+
+	// ScopeUserWriteChat allows app to send chat messages as the authenticated user.
 	ScopeUserWriteChat
 )
 
-var ScopeTypeId = map[string]ScopeType{
+// scopeTypeId translates the string version of an access scope to its enum value.
+var scopeTypeId = map[string]ScopeType{
 	"analytics:read:extensions":         ScopeAnalyticsReadExtensions,
 	"analytics:read:games":              ScopeAnalyticsReadGames,
 	"bits:read":                         ScopeBitsRead,
@@ -163,7 +340,8 @@ var ScopeTypeId = map[string]ScopeType{
 	"user:write:chat":                   ScopeUserWriteChat,
 }
 
-var ScopeTypeName = map[ScopeType]string{
+// scopeTypeName translates the enum value version of an access scope to its string value.
+var scopeTypeName = map[ScopeType]string{
 	ScopeAnalyticsReadExtensions:        "analytics:read:extensions",
 	ScopeAnalyticsReadGames:             "analytics:read:games",
 	ScopeBitsRead:                       "bits:read",
@@ -243,7 +421,7 @@ var ScopeTypeName = map[ScopeType]string{
 
 func (t *ScopeType) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString(`"`)
-	buffer.WriteString(ScopeTypeName[*t])
+	buffer.WriteString(scopeTypeName[*t])
 	buffer.WriteString(`"`)
 	return buffer.Bytes(), nil
 }
@@ -255,6 +433,6 @@ func (t *ScopeType) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	*t = ScopeTypeId[s]
+	*t = scopeTypeId[s]
 	return nil
 }
