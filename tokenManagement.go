@@ -9,13 +9,13 @@ import (
 	"time"
 )
 
-func ValidateToken(token string) (*ValidTokenResponse, *FailedRequestResponse, error) {
-	var v ValidTokenResponse
-	var f FailedRequestResponse
+// ValidateToken confirms, using the Twitch Helix API, whether the supplied bearer token is valid.
+func ValidateToken(token string) (*TokenValidationResponse, error) {
+	var t TokenValidationResponse
 
-	req, err := http.NewRequest("GET", ValidationUrl, nil)
+	req, err := http.NewRequest("GET", validationUrl, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	req.Header.Add("Authorization", "Bearer "+token)
@@ -23,37 +23,40 @@ func ValidateToken(token string) (*ValidTokenResponse, *FailedRequestResponse, e
 
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	b, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	if res.StatusCode != 200 {
-		err = json.Unmarshal(b, &f)
+		t.ValidationStatus = StatusFailure
+		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
-			return nil, nil, errors.New(e)
+			return nil, errors.New(e)
 		}
 
-		return nil, &f, nil
+		return &t, nil
 	}
 
-	err = json.Unmarshal(b, &v)
+	t.ValidationStatus = StatusSuccess
+	err = json.Unmarshal(b, &t.ValidationData)
 	if err != nil {
 		e := fmt.Sprintf("error while parsing valid token response: %s", err)
-		return nil, nil, errors.New(e)
+		return nil, errors.New(e)
 	}
 
-	return &v, nil, nil
+	return &t, nil
 }
 
-func RevokeToken(token string, clientId string) (*FailedRequestResponse, error) {
-	var f FailedRequestResponse
+// RevokeToken revokes the supplied active bearer token.
+func RevokeToken(token string, clientId string) (*TokenRevocationResponse, error) {
+	var t TokenRevocationResponse
 
-	req, err := http.NewRequest("POST", RevocationUrl, nil)
+	req, err := http.NewRequest("POST", revocationUrl, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -77,13 +80,15 @@ func RevokeToken(token string, clientId string) (*FailedRequestResponse, error) 
 	}
 
 	if res.StatusCode != 200 {
-		err = json.Unmarshal(b, &f)
+		t.RevocationStatus = StatusFailure
+		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
 			return nil, errors.New(e)
 		}
-		return &f, nil
+		return &t, nil
 	}
 
-	return nil, nil
+	t.RevocationStatus = StatusSuccess
+	return &t, nil
 }

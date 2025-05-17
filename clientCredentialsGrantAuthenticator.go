@@ -9,12 +9,22 @@ import (
 	"time"
 )
 
+/*
+ClientCredentialsGrantAuthenticator allows for the generation of an authorization URL following Twitch's
+OAuth client credentials grant flow.
+
+New instances of ClientCredentialsGrantAuthenticator should be created via
+NewClientCredentialsGrantAuthenticator.
+
+Twitch docs: https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#client-credentials-grant-flow
+*/
 type ClientCredentialsGrantAuthenticator struct {
 	ClientId     string `json:"client_id"`
 	ClientSecret string `json:"client_secret"`
 	GrantType    string `json:"grant_type"`
 }
 
+// NewClientCredentialsGrantAuthenticator generates a new ClientCredentialsGrantAuthenticator instance.
 func NewClientCredentialsGrantAuthenticator(clientId string, clientSecret string) *ClientCredentialsGrantAuthenticator {
 	return &ClientCredentialsGrantAuthenticator{
 		ClientId:     clientId,
@@ -23,13 +33,13 @@ func NewClientCredentialsGrantAuthenticator(clientId string, clientSecret string
 	}
 }
 
-func (a *ClientCredentialsGrantAuthenticator) GetToken() (*AccessTokenRequestResponse, *FailedRequestResponse, error) {
-	var t AccessTokenRequestResponse
-	var f FailedRequestResponse
+// GetToken retrieves a new bearer token via the Twitch Helix API.
+func (a *ClientCredentialsGrantAuthenticator) GetToken() (*TokenResponse, error) {
+	var t TokenResponse
 
-	req, err := http.NewRequest("POST", TokenUrl, nil)
+	req, err := http.NewRequest("POST", tokenUrl, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
@@ -43,28 +53,30 @@ func (a *ClientCredentialsGrantAuthenticator) GetToken() (*AccessTokenRequestRes
 	client := http.Client{Timeout: 60 * time.Second}
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	b, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	if res.StatusCode != 200 {
-		err = json.Unmarshal(b, &f)
+		t.TokenRequestStatus = StatusFailure
+		err = json.Unmarshal(b, &t.FailureData)
 		if err != nil {
 			e := fmt.Sprintf("error while parsing failed request response: %s", err)
-			return nil, nil, errors.New(e)
+			return nil, errors.New(e)
 		}
-		return nil, &f, nil
+		return &t, nil
 	}
 
-	err = json.Unmarshal(b, &t)
+	t.TokenRequestStatus = StatusSuccess
+	err = json.Unmarshal(b, &t.TokenData)
 	if err != nil {
-		e := fmt.Sprintf("error while parsing valid token response: %s", err)
-		return nil, nil, errors.New(e)
+		e := fmt.Sprintf("error while parsing token response: %s", err)
+		return nil, errors.New(e)
 	}
 
-	return &t, nil, nil
+	return &t, nil
 }

@@ -6,8 +6,17 @@ import (
 	"strings"
 )
 
+/*
+ImplicitGrantAuthenticator allows for the generation of an authorization URL following Twitch's
+OAuth implicit grant flow.
+
+New instances of ImplicitGrantAuthenticator should be created via
+NewImplicitGrantAuthenticator.
+
+Twitch docs: https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow
+*/
 type ImplicitGrantAuthenticator struct {
-	RequestedScopes []ScopeType
+	requestedScopes []ScopeType
 	clientId        string
 	forceVerify     bool
 	redirectUri     string
@@ -16,9 +25,10 @@ type ImplicitGrantAuthenticator struct {
 	responseType    string
 }
 
+// NewImplicitGrantAuthenticator generates a new ImplicitGrantAuthenticator instance.
 func NewImplicitGrantAuthenticator(clientId string, forceVerify bool, redirectUri string, scopes []ScopeType, state string) *ImplicitGrantAuthenticator {
 	return &ImplicitGrantAuthenticator{
-		RequestedScopes: scopes,
+		requestedScopes: scopes,
 		clientId:        clientId,
 		forceVerify:     forceVerify,
 		redirectUri:     redirectUri,
@@ -27,8 +37,10 @@ func NewImplicitGrantAuthenticator(clientId string, forceVerify bool, redirectUr
 	}
 }
 
-func (a *ImplicitGrantAuthenticator) GenerateAuthorizationUri() (*url.URL, error) {
-	authUrl, err := url.Parse(AuthorizationUrl)
+// GenerateAuthorizationUrl builds a url.URL that allows a user to authorize a Twitch app and generate
+// a bearer token.
+func (a *ImplicitGrantAuthenticator) GenerateAuthorizationUrl() (*url.URL, error) {
+	authUrl, err := url.Parse(authorizationUrl)
 	if err != nil {
 		return nil, err
 	}
@@ -48,16 +60,27 @@ func (a *ImplicitGrantAuthenticator) GenerateAuthorizationUri() (*url.URL, error
 	return authUrl, err
 }
 
+// getScopeNames retrieves the string version of the ScopeType(s) supplied to the ImplicitGrantAuthenticator.
 func (a *ImplicitGrantAuthenticator) getScopeNames() []string {
 	var scopeNames []string
-	for _, s := range a.RequestedScopes {
-		scopeNames = append(scopeNames, ScopeTypeName[s])
+	for _, s := range a.requestedScopes {
+		scopeNames = append(scopeNames, scopeTypeName[s])
 	}
 
 	return scopeNames
 }
 
-func (a *ImplicitGrantAuthenticator) UpdateScopes(scopes []ScopeType) (*url.URL, error) {
-	a.RequestedScopes = scopes
-	return a.GenerateAuthorizationUri()
+// UpdateScopes replaces the original array of ScopeType provided during initialization
+func (a *ImplicitGrantAuthenticator) UpdateScopes(scopes []ScopeType) {
+	a.requestedScopes = scopes
+}
+
+/*
+GetScopes retrieves the currently requested list of scopes. It's important to note that the scopes returned
+are only what has been supplied to the authenticator - not what the end user has authorized.
+
+To retrieve the scopes that the user has authorized, you can use the ValidateToken function.
+*/
+func (a *ImplicitGrantAuthenticator) GetScopes() []ScopeType {
+	return a.requestedScopes
 }
