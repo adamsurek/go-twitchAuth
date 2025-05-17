@@ -9,12 +9,22 @@ import (
 	"time"
 )
 
+/*
+ClientCredentialsGrantAuthenticator allows for the generation of an authorization URL following Twitch's
+OAuth client credentials grant flow.
+
+New instances of ClientCredentialsGrantAuthenticator should be created via
+NewClientCredentialsGrantAuthenticator.
+
+Twitch docs: https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#client-credentials-grant-flow
+*/
 type ClientCredentialsGrantAuthenticator struct {
 	ClientId     string `json:"client_id"`
 	ClientSecret string `json:"client_secret"`
 	GrantType    string `json:"grant_type"`
 }
 
+// NewClientCredentialsGrantAuthenticator generates a new ClientCredentialsGrantAuthenticator instance.
 func NewClientCredentialsGrantAuthenticator(clientId string, clientSecret string) *ClientCredentialsGrantAuthenticator {
 	return &ClientCredentialsGrantAuthenticator{
 		ClientId:     clientId,
@@ -23,6 +33,7 @@ func NewClientCredentialsGrantAuthenticator(clientId string, clientSecret string
 	}
 }
 
+// GetToken retrieves a new bearer token via the Twitch Helix API.
 func (a *ClientCredentialsGrantAuthenticator) GetToken() (*TokenResponse, error) {
 	var t TokenResponse
 
