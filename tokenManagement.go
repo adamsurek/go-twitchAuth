@@ -53,7 +53,7 @@ func ValidateToken(token string) (*TokenValidationResponse, error) {
 }
 
 // RevokeToken revokes the supplied active bearer token.
-func RevokeToken(token string, clientId string) (*TokenRevocationResponse, error) {
+func RevokeToken(clientId string, token string) (*TokenRevocationResponse, error) {
 	var t TokenRevocationResponse
 
 	req, err := http.NewRequest("POST", revocationUrl, nil)
