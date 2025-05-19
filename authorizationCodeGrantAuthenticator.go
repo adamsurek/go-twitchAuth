@@ -132,10 +132,59 @@ func (a *AuthorizationCodeGrantAuthenticator) GetToken(code string) (*TokenRespo
 	return &t, nil
 }
 
-// UpdateScopes replaces the original array of ScopeType provided during initialization
-func (a *AuthorizationCodeGrantAuthenticator) UpdateScopes(scopes []ScopeType) (*url.URL, error) {
+// RefreshToken uses the refresh token provided by the GetToken method to retrieve a new bearer token.
+func (a *AuthorizationCodeGrantAuthenticator) RefreshToken(refreshToken string) (*TokenResponse, error) {
+	var t TokenResponse
+
+	req, err := http.NewRequest("POST", tokenUrl, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	q := req.URL.Query()
+	q.Add("client_id", a.clientId)
+	q.Add("client_secret", a.clientSecret)
+	q.Add("grant_type", "refresh_token")
+	q.Add("refresh_token", refreshToken)
+	req.URL.RawQuery = q.Encode()
+
+	client := http.Client{Timeout: 60 * time.Second}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode != 200 {
+		t.TokenRequestStatus = StatusFailure
+		err = json.Unmarshal(b, &t.FailureData)
+		if err != nil {
+			e := fmt.Sprintf("error while parsing failed request response: %s", err)
+			return nil, errors.New(e)
+		}
+		return &t, nil
+	}
+
+	t.TokenRequestStatus = StatusSuccess
+	err = json.Unmarshal(b, &t.TokenData)
+	if err != nil {
+		e := fmt.Sprintf("error while parsing token response: %s", err)
+		return nil, errors.New(e)
+	}
+
+	return &t, nil
+}
+
+// UpdateScopes replaces the original array of ScopeType provided during initialization. Call
+// GenerateAuthorizationUrl to reauthorize with new scopes.
+func (a *AuthorizationCodeGrantAuthenticator) UpdateScopes(scopes []ScopeType) {
 	a.requestedScopes = scopes
-	return a.GenerateAuthorizationUrl()
 }
 
 /*

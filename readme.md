@@ -81,6 +81,7 @@ package main
 import (
   ta "github.com/adamsurek/go-twitchAuth"
   "log"
+  "time"
 )
 
 func main() {
@@ -125,6 +126,22 @@ func main() {
     log.Println(t.TokenData.AccessToken)
   } else {
     // ex.: 400 - Invalid authorization code
+    log.Fatalf("exchange did not succeed: %d - %s", t.FailureData.Status, t.FailureData.Message)
+  }
+  
+  time.Sleep(5 * time.Second)
+
+  // Refresh the access token
+  t, err = a.RefreshToken(t.TokenData.RefreshToken)
+  if err != nil {
+    log.Fatalf("failed to refresh token: %s", err)
+  }
+
+  // Ensure that the refresh returned a token
+  if t.TokenRequestStatus == ta.StatusSuccess {
+    log.Println(t.TokenData.AccessToken)
+  } else {
+    // ex.: 400 - Invalid refresh token
     log.Fatalf("exchange did not succeed: %d - %s", t.FailureData.Status, t.FailureData.Message)
   }
 }
